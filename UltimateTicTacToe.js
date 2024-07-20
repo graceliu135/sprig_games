@@ -14,6 +14,7 @@ const o = "o"
 const wall = "w"
 const sides = "s"
 
+
 setLegend(
   [player, bitmap`
 5555555555555555
@@ -33,9 +34,9 @@ setLegend(
 5777777777777775
 5555555555555555`],
   [x, bitmap`
-33............33
-333..........333
-.333........333.
+................
+................
+..33........33..
 ..333......333..
 ...333....333...
 ....333..333....
@@ -46,26 +47,26 @@ setLegend(
 ....333..333....
 ...333....333...
 ..333......333..
-.333........333.
-333..........333
-33............33`],
+..33........33..
+................
+................`],
   [o, bitmap`
-...4444444444...
-..444444444444..
-.44444444444444.
-44444......44444
-4444........4444
-444..........444
-444..........444
-444..........444
-444..........444
-444..........444
-444..........444
-4444........4444
-44444......44444
-.44444444444444.
-..444444444444..
-...4444444444...`],
+................
+................
+.....444444.....
+....44444444....
+...444....444...
+..444......444..
+..44........44..
+..44........44..
+..44........44..
+..44........44..
+..444......444..
+...444....444...
+....44444444....
+.....444444.....
+................
+................`],
   [wall, bitmap`
 0000000000000000
 0000000000000000
@@ -100,6 +101,7 @@ setLegend(
 0..............0
 0..............0
 0000000000000000`],
+  
 )
 
 setSolids([player, wall]);
@@ -287,12 +289,51 @@ function checkForSmallWinner(curBoard) {
     return "o";
   }
 
+  let allSpacesTaken = true;
   for (let i = 0; i < 3; i++) {
-    for (let j = 1; j < 3; j++) {
-      smallBoard[curBoard][i][j] = "";
+    for (let j = 0; j < 3; j++) {
+      if (smallBoard[curBoard][i][j] == "") {
+        allSpacesTaken = false;
+        break;
+      }
     }
   }
-  return "draw";
+
+  if (allSpacesTaken) {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        smallBoard[curBoard][i][j] = "";
+        let addX = 0;
+        let addY = 0;
+        
+        if (curBoard == 1) {
+          addX = 4;
+        } else if (curBoard == 2) {
+          addX = 8;
+        } else if (curBoard == 3) {
+          addY = 4;
+        } else if (curBoard == 4) {
+          addX = 4;
+          addY = 4;
+        } else if (curBoard == 5) {
+          addX = 8;
+          addY = 4;
+        } else if (curBoard == 6) {
+          addY = 8;
+        } else if (curBoard == 7) {
+          addX = 4;
+          addY = 8;
+        } else if (curBoard == 8) {
+          addX = 8;
+          addY = 8;
+        }
+        
+        clearTile(i + addX, j + addY);
+      }
+    }
+    return "draw";
+  }
+  return "none";
 }
 
 function checkForLargeWinner() {
@@ -340,7 +381,63 @@ function checkForLargeWinner() {
     return "o";
   }
 
-  return "draw";
+  let allSpacesTaken = true;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (bigBoard[i][j] == "") {
+        allSpacesTaken = false;
+        break;
+      }
+    }
+  }
+
+  if (allSpacesTaken) {
+    return "draw";
+  }
+  return "none";
+}
+
+function placeBigXO(winner, curBoard) {
+  let addX = 0;
+  let addY = 0;
+  
+  if (curBoard == 1) {
+    addX = 4;
+  } else if (curBoard == 2) {
+    addX = 8;
+  } else if (curBoard == 3) {
+    addY = 4;
+  } else if (curBoard == 4) {
+    addX = 4;
+    addY = 4;
+  } else if (curBoard == 5) {
+    addX = 8;
+    addY = 4;
+  } else if (curBoard == 6) {
+    addY = 8;
+  } else if (curBoard == 7) {
+    addX = 4;
+    addY = 8;
+  } else if (curBoard == 8) {
+    addX = 8;
+    addY = 8;
+  }
+    
+  if (winner == "x") {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        clearTile(i + addX, j + addY);
+        addSprite(i + addX, j + addY, x);
+      }
+    }
+  } else {
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          clearTile(i + addX, j + addY);
+          addSprite(i + addX, j + addY, o);
+        }
+      }
+  }
 }
 
 onInput("w", () => {
@@ -486,54 +583,76 @@ onInput("j", () => {
     if (checkForSmallWinner(currentBoard) == "x") {
       if (currentBoard == 0) {
         bigBoard[0][0] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 1) {
         bigBoard[0][1] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 2) {
         bigBoard[0][2] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 3) {
         bigBoard[1][0] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 4) {
         bigBoard[1][1] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 5) {
         bigBoard[1][2] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 6) {
         bigBoard[2][0] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 7) {
         bigBoard[2][1] = "x";
+        placeBigXO("x", currentBoard);
       } else if (currentBoard == 8) {
         bigBoard[2][2] = "x";
+        placeBigXO("x", currentBoard);
       }
 
       if (checkForLargeWinner == "x") {
         gameFinished("x");
       } else if (checkForLargeWinner == "o") {
         gameFinished("o");
+      } else if (checkForLargeWinner == "draw") {
+        gameFinished("draw");
       }
     } else if (checkForSmallWinner(currentBoard) == "o") {
       if (currentBoard == 0) {
         bigBoard[0][0] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 1) {
         bigBoard[0][1] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 2) {
         bigBoard[0][2] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 3) {
         bigBoard[1][0] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 4) {
         bigBoard[1][1] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 5) {
         bigBoard[1][2] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 6) {
         bigBoard[2][0] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 7) {
         bigBoard[2][1] = "o";
+        placeBigXO("o", currentBoard);
       } else if (currentBoard == 8) {
         bigBoard[2][2] = "o";
+        placeBigXO("o", currentBoard);
       }
 
       if (checkForLargeWinner == "x") {
         gameFinished("x");
       } else if (checkForLargeWinner == "o") {
         gameFinished("o");
+      } else if (checkForLargeWinner == "draw") {
+        gameFinished("draw");
       }
     }
 
@@ -543,6 +662,10 @@ onInput("j", () => {
       turn = true;
     }
 
+    if (getAll(player).length == 0) {
+      addSprite(curPosition[0], curPosition[1], player);
+    }
+    
     if (yLocToPut == 0) {
       if (xLocToPut == 0) {
         currentBoard = 0;
