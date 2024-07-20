@@ -122,30 +122,6 @@ wwwwwwwwwww
 ...w...w...`,
 ]
 
-// const levels = [
-//   map`
-// .....w.....w.....
-// .sss.w.sss.w.sss.
-// .sss.w.sss.w.sss.
-// .sss.w.sss.w.sss.
-// .....w.....w.....
-// wwwwwwwwwwwwwwwww
-// .....w.....w.....
-// .sss.w.sss.w.sss.
-// .sss.w.sss.w.sss.
-// .sss.w.sss.w.sss.
-// .....w.....w.....
-// wwwwwwwwwwwwwwwww
-// .....w.....w.....
-// .sss.w.sss.w.sss.
-// .sss.w.sss.w.sss.
-// .sss.w.sss.w.sss.
-// .....w.....w.....`,
-//   map`
-// sss
-// sss
-// sss`,
-// ]
 
 setMap(levels[level])
 
@@ -440,6 +416,14 @@ function placeBigXO(winner, curBoard) {
   }
 }
 
+function checkIfPlacedInWon(curBoard) {
+  if (checkForSmallWinner(curBoard) === "none") {
+    setSolids([player, wall]);
+  } else {
+    setSolids([player, ]);
+  }
+}
+
 onInput("w", () => {
   if (!gameover) {
     getFirst(player).y -= 1;
@@ -464,7 +448,59 @@ onInput("d", () => {
   }
 });
 
-onInput("j", () => {
+onInput("j", () => {  
+  // let centerX = 1;
+  // let centerY = 1;
+  // if (currentBoard == 1) {
+  //   centerX = 5;
+  // } else if (currentBoard == 2) {
+  //   centerX = 9;
+  // } else if (currentBoard == 3) {
+  //   centerY = 5;
+  // } else if (currentBoard == 4) {
+  //   centerX = 5;
+  //   centerY = 5;
+  // } else if (currentBoard == 5) {
+  //   centerX = 9;
+  //   centerY = 5;
+  // } else if (currentBoard == 6) {
+  //   centerY = 9;
+  // } else if (currentBoard == 7) {
+  //   centerX = 5;
+  //   centerY = 9;
+  // } else if (currentBoard == 8) {
+  //   centerX = 9;
+  //   centerY = 9;
+  // }
+  
+  //if (getFirst(player).x - centerX > 1 || getFirst(player).y - centerY > 1) {
+    if (getFirst(player).x <=2) {
+      if (getFirst(player).y <=2) {
+        currentBoard = 0;
+      } else if (getFirst(player).y <=6) {
+        currentBoard = 3;
+      } else {
+        currentBoard = 6;
+      }
+    } else if (getFirst(player).x <= 6) {
+      if (getFirst(player).y <=2) {
+        currentBoard = 1;
+      } else if (getFirst(player).y <=6) {
+        currentBoard = 4;
+      } else {
+        currentBoard = 7;
+      }
+    } else {
+      if (getFirst(player).y <=2) {
+        currentBoard = 2;
+      } else if (getFirst(player).y <=6) {
+        currentBoard = 5;
+      } else {
+        currentBoard = 8;
+      }
+    }
+  //}
+        
   if (gameover) {
     clearText();
     gameover = false;
@@ -531,6 +567,9 @@ onInput("j", () => {
       ],
     ];
 
+    getFirst(player).x = 5;
+    getFirst(player).y = 5;
+
     currentBoard = 4;
     turn = true;
   } else {
@@ -578,6 +617,20 @@ onInput("j", () => {
       addSprite(curPosition[0], curPosition[1], o);
       smallBoard[currentBoard][yLocToPut][xLocToPut] = "o";
     }
+
+    // bigBoard.forEach(function(entry) {
+    //   console.log(entry);
+    // });
+
+    // if (checkForLargeWinner == "x") {
+    //    console.log("x");
+    // } else if (checkForLargeWinner == "o") {
+    //    console.log("o");
+    // } else if (checkForLargeWinner == "draw") {
+    //    console.log("draw");
+    // } else {
+    //   console.log("none");
+    // }
 
     // check for small board winner
     if (checkForSmallWinner(currentBoard) == "x") {
@@ -712,6 +765,6 @@ onInput("j", () => {
         getFirst(player).y = 9;
       }
     }
-
+    checkIfPlacedInWon(currentBoard);
   }
 });
