@@ -190,20 +190,19 @@ function gameFinished(winner) {
   gameover = true
   if (winner == "x") {
     addText(`Game over. X won!`, {
-      x: 5,
       y: 5,
+      size: 1,
       color: color`3`
     })
   } else if (winner == "o") {
     addText(`Game over. O won!`, {
-      x: 5,
       y: 5,
       color: color`4`
     })
   } else {
     addText(`Game over.`, {
-      x: 3,
-      y: 5,
+      x: 6,
+      y: 3,
       color: color`9`
     })
     addText(`It's a draw!`, {
@@ -213,9 +212,10 @@ function gameFinished(winner) {
     })
   }
   addText(`Press J to restart`, {
-    x: 7,
-    y: 5,
-    color: color`D`
+    x: 1,
+    y: 10,
+    size: 1,
+    color: color`H`
   })
 }
 
@@ -318,13 +318,11 @@ function checkForLargeWinner() {
     return "x";
   } else if (bigBoard[0][0] == bigBoard[0][1] && bigBoard[0][1] == bigBoard[0][2] && bigBoard[0][2] == "o") {
     return "o";
-  }
-  if (bigBoard[1][0] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[1][2] && bigBoard[1][2] == "x") {
+  } else if (bigBoard[1][0] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[1][2] && bigBoard[1][2] == "x") {
     return "x";
   } else if (bigBoard[1][0] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[1][2] && bigBoard[1][2] == "o") {
     return "o";
-  }
-  if (bigBoard[2][0] == bigBoard[2][1] && bigBoard[2][1] == bigBoard[2][2] && bigBoard[2][2] == "x") {
+  } else if (bigBoard[2][0] == bigBoard[2][1] && bigBoard[2][1] == bigBoard[2][2] && bigBoard[2][2] == "x") {
     return "x";
   } else if (bigBoard[2][0] == bigBoard[2][1] && bigBoard[2][1] == bigBoard[2][2] && bigBoard[2][2] == "o") {
     return "o";
@@ -334,13 +332,11 @@ function checkForLargeWinner() {
     return "x";
   } else if (bigBoard[0][0] == bigBoard[1][0] && bigBoard[1][0] == bigBoard[2][0] && bigBoard[2][0] == "o") {
     return "o";
-  }
-  if (bigBoard[0][1] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[2][1] && bigBoard[2][1] == "x") {
+  } else if (bigBoard[0][1] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[2][1] && bigBoard[2][1] == "x") {
     return "x";
   } else if (bigBoard[0][1] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[2][1] && bigBoard[2][1] == "o") {
     return "o";
-  }
-  if (bigBoard[0][2] == bigBoard[1][2] && bigBoard[1][2] == bigBoard[2][2] && bigBoard[2][2] == "x") {
+  } else if (bigBoard[0][2] == bigBoard[1][2] && bigBoard[1][2] == bigBoard[2][2] && bigBoard[2][2] == "x") {
     return "x";
   } else if (bigBoard[0][2] == bigBoard[1][2] && bigBoard[1][2] == bigBoard[2][2] && bigBoard[2][2] == "o") {
     return "o";
@@ -350,12 +346,13 @@ function checkForLargeWinner() {
     return "x";
   } else if (bigBoard[0][0] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[2][2] && bigBoard[2][2] == "o") {
     return "o";
-  }
-  if (bigBoard[0][2] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[2][0] && bigBoard[2][0] == "x") {
+  } else if (bigBoard[0][2] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[2][0] && bigBoard[2][0] == "x") {
     return "x";
   } else if (bigBoard[0][2] == bigBoard[1][1] && bigBoard[1][1] == bigBoard[2][0] && bigBoard[2][0] == "o") {
     return "o";
   }
+
+  // console.log("here");
 
   let allSpacesTaken = true;
   for (let i = 0; i < 3; i++) {
@@ -372,6 +369,7 @@ function checkForLargeWinner() {
   }
   return "none";
 }
+
 
 function placeBigXO(winner, curBoard) {
   let addX = 0;
@@ -622,11 +620,11 @@ onInput("j", () => {
     //   console.log(entry);
     // });
 
-    // if (checkForLargeWinner == "x") {
+    // if (checkForLargeWinner() == "x") {
     //    console.log("x");
-    // } else if (checkForLargeWinner == "o") {
+    // } else if (checkForLargeWinner() == "o") {
     //    console.log("o");
-    // } else if (checkForLargeWinner == "draw") {
+    // } else if (checkForLargeWinner() == "draw") {
     //    console.log("draw");
     // } else {
     //   console.log("none");
@@ -663,11 +661,11 @@ onInput("j", () => {
         placeBigXO("x", currentBoard);
       }
 
-      if (checkForLargeWinner == "x") {
+      if (checkForLargeWinner() == "x") {
         gameFinished("x");
-      } else if (checkForLargeWinner == "o") {
+      } else if (checkForLargeWinner() == "o") {
         gameFinished("o");
-      } else if (checkForLargeWinner == "draw") {
+      } else if (checkForLargeWinner() == "draw") {
         gameFinished("draw");
       }
     } else if (checkForSmallWinner(currentBoard) == "o") {
@@ -700,11 +698,11 @@ onInput("j", () => {
         placeBigXO("o", currentBoard);
       }
 
-      if (checkForLargeWinner == "x") {
+      if (checkForLargeWinner() == "x") {
         gameFinished("x");
-      } else if (checkForLargeWinner == "o") {
+      } else if (checkForLargeWinner() == "o") {
         gameFinished("o");
-      } else if (checkForLargeWinner == "draw") {
+      } else if (checkForLargeWinner() == "draw") {
         gameFinished("draw");
       }
     }
