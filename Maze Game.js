@@ -139,57 +139,86 @@ H88888888888888H
 HHHHHHHHHHHHHHHH`],
 )
 
+// the levels
 let level = 0
-// const levels = [
-//   map`
-// wwwwwwwwwwwwwww
-// wpwtttttttt...w
-// w.wkwkwkwkwkw.w
-// w.w.w.w.w.w.w.w
-// w.w.w.w.w.w.w.w
-// w.w.w.w.w.w.w.w
-// w.....w.w.w.w.w
-// w.wwwww.w.w.w.w
-// w.......w.w.w.w
-// w.wwwwwww.w.w.w
-// w.........w.w.w
-// w.wwwwwwwww.w.w
-// w...........wgw
-// wwwwwwwwwwwwwww`,
-//   map`
-// wwwwwwwwwwwwwww
-// wpwgwt........w
-// w.wqwt.wwwwww.w
-// w.wwwt.....qw.w
-// w.wttt.wwwwww.w
-// w.w.w...w...w.w
-// w.w.w.w.w.w.w.w
-// w.w.w.w.w.w.w.w
-// w.w.w.wkw.w...w
-// w.w.w.www.www.w
-// w.w........kw.w
-// w.wwwwwwwwwww.w
-// w.............w
-// wwwwwwwwwwwwwww`,
-// ]
-
 const levels = [
   map`
 wwwwwwwwwwwwwww
+wpwtttttttt...w
+w.wkwkwkwkwkw.w
+w.w.w.w.w.w.w.w
+w.w.w.w.w.w.w.w
+w.w.w.w.w.w.w.w
+w.....w.w.w.w.w
+w.wwwww.w.w.w.w
+w.......w.w.w.w
+w.wwwwwww.w.w.w
+w.........w.w.w
+w.wwwwwwwww.w.w
+w...........wgw
+wwwwwwwwwwwwwww`,
+  map`
+wwwwwwwwwwwwwww
+wpwgwt........w
+w.wqwt.wwwwww.w
+w.wwwt.....qw.w
+w.wttt.wwwwww.w
+w.w.w...w...w.w
+w.w.w.w.w.w.w.w
+w.w.w.w.w.w.w.w
+w.w.w.wkw.w...w
+w.w.w.www.www.w
+w.w........kw.w
+w.wwwwwwwwwww.w
+w.............w
+wwwwwwwwwwwwwww`,
+  map`
+wwwwwwwwwwwwwww
+wtktw..kw....tw
+wt.tw.t.w.tt..w
+wt.tw.t.w...w.w
+w...w...www.w.w
+w.www.wwwqw.w.w
+w.w...wpw.w.w.w
+w.w.w...w.wkw.w
+w.w.wwwww.www.w
+w.w...........w
+w.wwwwwwwwwwwww
+w......t......w
+wq.t.......t.gw
+wwwwwwwwwwwwwww`,
+  map`
+wwwwwwwwwwwwwww
 wp............w
+w.ww.wwwwwwww.w
+w.w.........w.w
+w.w.w.wwwww.w.w
+w.w.w.....w.w.w
+w.wkw.wgwqw.w.w
+wwwwwwwwwwwwwww
+w.w.wq....wkw.w
+w.w.wwwww.w.w.w
+w.w.........w.w
+w.wwwwwwww.ww.w
 w.............w
-w...q...q.....w
-w.............w
-w.............w
-w.............w
-w.............w
-w.............w
-w.............w
-w.............w
-w.............w
-w............gw
+wwwwwwwwwwwwwww`,
+  map`
+wwwwwwwwwwwwwww
+w.w...wq..wk..w
+w.w.w.w.w.w.p.w
+w.w.w.w.w.wq..w
+w.w.www.w.www.w
+wkw...w.wk..t.w
+w.w.w.w.wwwwwww
+w.w.w.........w
+w.w.w.wwwwwwwww
+w.w.w.........w
+w.w.ww.wwwwtwww
+w.w.t..kkkkkkkw
+w...t..kkkkkkgw
 wwwwwwwwwwwwwww`,
 ]
+
 
 const currentLevel = levels[level]
 setMap(currentLevel)
@@ -202,7 +231,7 @@ setPushables({
 
 // inputs for player movement control
 onInput("s", () => {
-  getFirst(player).y += 1; // positive y is downwards
+  getFirst(player).y += 1; 
 });
 
 onInput("d", () => {
@@ -217,17 +246,20 @@ onInput("a", () => {
   getFirst(player).x += -1;
 });
 
+// keys info
 let curKeys = 0;
 let keysToPass = tilesWith(key);
-
-const tileHasType = (x, y, type) => {
-  return getTile(x, y).some(sprite => sprite.type === type);
-}
 
 addText("Keys Collected: " + curKeys, {
   x: 0,
   y: 0,
-})
+});
+
+// checks if a tile has a type of sprite
+const tileHasType = (x, y, type) => {
+  return getTile(x, y).some(sprite => sprite.type === type);
+}
+
 
 afterInput(() => {
   const xLoc = getFirst(player).x;
@@ -238,6 +270,7 @@ afterInput(() => {
   const tileHasKey = tileHasType(xLoc, yLoc, key);
   const tileHasPortal = tileHasType(xLoc, yLoc, portal);
 
+  // if there is a key it collects it 
   if (tileHasKey) {
     curKeys = curKeys + 1;
     addText("Keys Collected: " + curKeys, {
@@ -248,6 +281,7 @@ afterInput(() => {
     addSprite(xLoc, yLoc, player);
   }
 
+  // if at the goal, checks if collected all the keys and can continue to next level
   if (tileHasGoal) {
     if (curKeys == keysToPass.length) {
       level = level + 1;
@@ -264,24 +298,36 @@ afterInput(() => {
     }
   }
 
+  // if at a trap, restart the level
   if (tileHasTrap) {
     curKeys = 0;
-    const currentLevel = levels[level]; // get the original map of the level
+    const currentLevel = levels[level]; 
 
-    // make sure the level exists before we load it
     if (currentLevel !== undefined) {
       clearText("");
       setMap(currentLevel);
     }
   }
 
+  // if at a portal, goes to the other portal location
   if (tileHasPortal) {
-    const portalTiles = tilesWith(portal);
-    const otherPortal = portalTiles.find(tile => tile.x !== xLoc || tile.y !== yLoc);
-    addText(otherPortal.x)
+    let portalPositions = [];
 
-    getFirst(player).x = otherPortal.x;
-    getFirst(player).y = otherPortal.y;
-
+    for (let i = 0; i < width(); i++) {
+      for (let j = 0; j < height(); j++) {
+        if (getTile(i, j).some(sprite => sprite.type === portal)) {
+          portalPositions.push({ x: i, y: j });
+        }
+      }
+    }
+  
+    const currentPortalIndex = portalPositions.findIndex(pos => pos.x === xLoc && pos.y === yLoc);
+    const otherPortalIndex = currentPortalIndex === 0 ? 1 : 0;
+    const otherX = portalPositions[otherPortalIndex].x;
+    const otherY = portalPositions[otherPortalIndex].y;
+    
+    clearTile(xLoc, yLoc);
+    addSprite(xLoc, yLoc, portal);
+    addSprite(otherX, otherY, player); 
   }
 })
